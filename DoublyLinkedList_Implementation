@@ -1,0 +1,167 @@
+//Created by Sreekar
+//Example of Bank Details..So need to include ID with its balance
+//insert,display or delete at any time
+//implemented a comparision function for further clarity.
+//Time complexity:
+//Insert,Delete   Search,Access
+//  O(1)              O(n)
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+int c = 0;
+int f = 0;
+struct NODE
+{
+ char acc_no[20];
+ int balance;
+ struct NODE *prev;
+ struct NODE *next;
+} * temp, *temp1, *temp2, *first;
+struct greater
+{
+ int bg;
+ char af[20];
+} h[20];
+void make()
+{
+ int balance;
+ char acc_no[20];
+ temp = (struct NODE *)malloc(sizeof(struct NODE));
+ temp->prev = NULL;
+ temp->next = NULL;
+ printf("\nEnter Account ID followed by Balance:\n");
+ scanf("%s %d", acc_no, &balance);
+ if (balance >= 1500)
+ {
+ strcpy(h[f].af , acc_no);
+ h[f].bg = balance;
+ f++;
+ }
+ strcpy(temp->acc_no, acc_no);
+ temp->balance = balance;
+ c++;
+}
+
+void add()
+{
+ if (first == NULL)
+ {
+ make();
+ first = temp;
+ temp1 = first;
+ }
+ else
+ {
+ make();
+ temp1->next = temp;
+ temp->prev = temp1;
+ temp1 = temp;
+ }
+}
+
+void display()
+{
+ temp2 = first;
+ if (temp2 == NULL)
+ {
+ printf("Bank has no Customers.\n");
+ return;
+ }
+ printf("\nDetails:\n");
+ printf("Acc No\tBalance\n");
+ while (temp2 != NULL)
+ {
+ printf("%s\t%d\n", temp2->acc_no, temp2->balance);
+ temp2 = temp2->next;
+ }
+}
+
+void greater_check()
+{
+ if (f == 0)
+ {
+ printf("Bank has no Customers above 1500.\n");
+ return;
+ }
+ else
+ {
+ printf("The Customers greater than 1500 are:\n");
+ printf("Acc No\tBalance\n");
+ for (int i = 0; i < f; i++)
+ {
+ printf("%s\t%d\n", h[i].af, h[i].bg);
+ }
+ }
+}
+int delete(char *acc_no)
+{
+ struct NODE *temp;
+ temp = first;
+ if (temp == NULL)
+ {
+ printf("There are no Customers.\n");
+ return 0;
+ }
+ while (temp != NULL)
+ {
+ if (strcmp(acc_no, temp->acc_no) == 0)
+ {
+ first = first->next;
+ first->prev = NULL;
+ printf("Deleted: %s %d\n", temp->acc_no, temp->balance);
+ free(temp);
+ c--;
+ break;
+ }
+ else
+ {
+ temp = temp->next;
+ }
+ }
+ return 0;
+}
+int main()
+{
+ int ch, n, i;
+ char *acc_no;
+ first = NULL;
+ temp = temp1 = NULL;
+ printf("1. Add Customers.\n");
+ printf("2. Display the Database.\n");
+ printf("3. Remove a Customer.\n");
+ printf("4. List of Customers greater than 1500.\n");
+ printf("5. Exit\n");
+ while (2>1)
+ {
+ printf("Enter a Choice 1/2/3/4/5 : ");
+ scanf("%d", &ch);
+ switch (ch)
+ {
+ case 1:
+ printf("Enter the number of Customers: ");
+ scanf("%d", &n);
+ for (i = 0; i < n; i++)
+ {
+ add();
+ }
+ break;
+ case 2:
+ display();
+ break;
+ case 3:
+ printf("Input the Account ID you want to delete: ");
+ scanf("%s", acc_no);
+ delete(acc_no);
+ break;
+ case 4:
+ greater_check();
+ break;
+ case 5:
+ exit(0);
+ default:
+ printf("Please Enter a Valid Choice\n");
+ }
+ }
+ return 0;
+}
